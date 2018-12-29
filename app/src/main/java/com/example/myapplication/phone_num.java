@@ -14,6 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import java.util.ArrayList;
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 
 public class phone_num extends AppCompatActivity {
     RecyclerView mRecyclerView;
@@ -40,8 +44,12 @@ public class phone_num extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<phonenum_item> data;
-        data = getContactList();
+        ArrayList<phonenum_item> data = new ArrayList<>();
+        try {
+            data = getContactList();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         MyAdapter myAdapter = new MyAdapter(data);
         mRecyclerView.setAdapter(myAdapter);
@@ -53,7 +61,7 @@ public class phone_num extends AppCompatActivity {
         finish();
     }
 
-    private ArrayList<phonenum_item> getContactList() {
+    private ArrayList<phonenum_item> getContactList() throws JSONException {
         ArrayList<phonenum_item> data = new ArrayList<>();
         int icon = R.drawable.user;
 
@@ -63,17 +71,38 @@ public class phone_num extends AppCompatActivity {
                 ContactsContract.Contacts.PHOTO_ID
         }, null, null, ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
 
+        JSONArray jsonArray = new JSONArray();
+
         while (cursor.moveToNext()) {
             try {
-                String id = cursor.getString(0);
-                String name = cursor.getString(1);
-                String phonenum = contactsPhone(id);
-                phonenum_item item = new phonenum_item(icon, name, phonenum);
-                data.add(item);
-            } catch (Exception e) {
-                System.out.println(e.toString());
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("icon", icon);
+                jsonObject.put("name", cursor.getString(1));
+                jsonObject.put("phonenum", contactsPhone(cursor.getString(0)));
+
+                jsonArray.put(jsonObject);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
+
+        for (int i=0; i<jsonArray.length(); i++) {
+            JSONObject dataJsonObject = jsonArray.getJSONObject(i);
+            phonenum_item item = new phonenum_item(dataJsonObject.getInt("icon"), dataJsonObject.getString("name"), dataJsonObject.getString("phonenum"));
+            data.add(item);
+        }
+
+//            try {
+//                String id = cursor.getString(0);
+//                String name = cursor.getString(1);
+//                String phonenum = contactsPhone(id);
+//                phonenum_item item = new phonenum_item(icon, name, phonenum);
+//                data.add(item);
+//            } catch (Exception e) {
+//                System.out.println(e.toString());
+//            }
+//        }
 
         return data;
     }
