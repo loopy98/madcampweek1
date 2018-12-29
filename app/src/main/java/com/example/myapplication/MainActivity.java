@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case 1:
-                        Intent it1 = new Intent(MainActivity.this, gallery.class);
+                        Intent it1 = new Intent(MainActivity.this, GalleryActivity.class);
                         startActivity(it1);
                         finish();
                         break;

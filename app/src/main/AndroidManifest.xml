@@ -22,7 +22,7 @@
         <activity android:name=".phone_num">
 
         </activity>
-        <activity android:name=".gallery">
+        <activity android:name=".GalleryActivity">
 
         </activity>
         <activity android:name=".jayoo">
