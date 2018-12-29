@@ -61,6 +61,12 @@ public class phone_num extends AppCompatActivity {
         finish();
     }
 
+    public void add_contact(View view) {
+        Intent intent = new Intent(this, add_contact.class);
+        startActivity(intent);
+        finish();
+    }
+
     private ArrayList<phonenum_item> getContactList() throws JSONException {
         ArrayList<phonenum_item> data = new ArrayList<>();
         int icon = R.drawable.user;
