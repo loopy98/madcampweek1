@@ -114,7 +114,6 @@ public class phone_num extends AppCompatActivity {
     public void add_contact(View view) {
         Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
         startActivity(intent);
-        finish();
 
     }
 
@@ -203,7 +202,6 @@ public class phone_num extends AppCompatActivity {
             Intent it = new Intent(this, MainActivity.class);
             startActivity(it);
             finish();
-//            Toast.makeText(getApplicationContext(), "한번 더 뒤로가기를 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
         }
     }
 

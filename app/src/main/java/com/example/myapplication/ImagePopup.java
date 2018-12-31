@@ -15,9 +15,9 @@ import com.bumptech.glide.Glide;
 
 
 public class ImagePopup extends Activity {
-    private Context mContext = null;
-    private final int imgWidth = 960;
-    private final int imgHeight = 960;
+    private Context mContext;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,9 @@ public class ImagePopup extends Activity {
 
         /** 완성된 이미지 보여주기  */
         ImageView iv = (ImageView) findViewById(R.id.imageView);
-        ImageView imageView;
-        imageView = new ImageView(mContext);
 
-        
+
+
 
 //        BitmapFactory.Options bfo = new BitmapFactory.Options();
 //        bfo.inSampleSize = 2;
@@ -45,6 +44,22 @@ public class ImagePopup extends Activity {
 
         Glide.with(mContext).load(imgPath).into(iv);
     }
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Intent it = new Intent(this, GalleryActivity.class);
+            startActivity(it);
+            finish();
+        }
+    }
+
+
 
 
 }

@@ -34,6 +34,9 @@
         <activity android:name=".HalligalliActivity">
         </activity>
 
+        <activity android:name=".ImagePopup">
+        </activity>
+
 
     </application>
 
