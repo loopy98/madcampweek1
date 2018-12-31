@@ -25,12 +25,13 @@ import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
     private Context mContext;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-        mContext = this;
 
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
@@ -43,6 +44,7 @@ public class GalleryActivity extends AppCompatActivity {
             }
         }
 
+        mContext = this;
         GridView gv = (GridView) findViewById(R.id.gridview);
         final ImageAdapter ia = new ImageAdapter(this);
         gv.setAdapter(ia);
@@ -52,6 +54,21 @@ public class GalleryActivity extends AppCompatActivity {
                 ia.callImageViewer(position);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+            finish();
+        }
     }
 
     /**
@@ -105,7 +122,7 @@ public class GalleryActivity extends AppCompatActivity {
                 imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
                 imageView.setAdjustViewBounds(false);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(2, 2, 2, 2);
+                imageView.setPadding(1, 1, 1, 1);
             } else {
                 imageView = (ImageView) convertView;
             }

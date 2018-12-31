@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.EditText;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class phone_num extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     private EditText editSearch;
     private List<String> list;
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,4 +187,25 @@ public class phone_num extends AppCompatActivity {
 
         return result;
     }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+            finish();
+//            Toast.makeText(getApplicationContext(), "한번 더 뒤로가기를 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }
