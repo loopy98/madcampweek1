@@ -1,13 +1,18 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,17 +21,32 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
     private Context mContext;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-        mContext = this;
 
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+                Intent it = new Intent(this, MainActivity.class);
+                startActivity(it);
+                finish();
+            }
+        }
+
+        mContext = this;
         GridView gv = (GridView) findViewById(R.id.gridview);
         final ImageAdapter ia = new ImageAdapter(this);
         gv.setAdapter(ia);
@@ -36,6 +56,21 @@ public class GalleryActivity extends AppCompatActivity {
                 ia.callImageViewer(position);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+            finish();
+        }
     }
 
     /**
@@ -57,7 +92,7 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         public final void callImageViewer(int selectedIndex) {
-            Intent i = new Intent(mContext, GalleryActivity.class);
+            Intent i = new Intent(mContext, ImagePopup.class);
             String imgPath = getImageInfo(imgData, geoData, thumbsIDList.get(selectedIndex));
             i.putExtra("filename", imgPath);
             startActivityForResult(i, 1);
@@ -80,21 +115,25 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
+            DisplayMetrics mMetrics = new DisplayMetrics();
+            int rowWidth = (mMetrics.widthPixels) / 3;
+
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(95, 95));
+                imageView.setLayoutParams(new GridView.LayoutParams(320, 320));
                 imageView.setAdjustViewBounds(false);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(2, 2, 2, 2);
+                imageView.setPadding(1, 1, 1, 1);
             } else {
                 imageView = (ImageView) convertView;
             }
-            BitmapFactory.Options bo = new BitmapFactory.Options();
-            bo.inSampleSize = 8;
-            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
-            Bitmap resized = Bitmap.createScaledBitmap(bmp, 95, 95, true);
-            imageView.setImageBitmap(resized);
+//            BitmapFactory.Options bo = new BitmapFactory.Options();
+//            bo.inSampleSize = 8;
+//            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
+//            Bitmap resized = Bitmap.createScaledBitmap(bmp, 95, 95, true);
+//            imageView.setImageBitmap(resized);
+            Glide.with(mContext).load(thumbsDataList.get(position)).into(imageView);
 
             return imageView;
         }

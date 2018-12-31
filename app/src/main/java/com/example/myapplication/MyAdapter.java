@@ -51,5 +51,13 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     public int getItemCount() {
         return data.size();
     }
+
+
+    public String getname(RecyclerView.ViewHolder holder) {
+        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        String name = myViewHolder.name.toString();
+        return name;
+    }
+
 }
 

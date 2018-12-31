@@ -10,9 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> al = new ArrayList<String>();
         al.add("나만의 전화번호부 ");
         al.add("나만의 갤러리 ");
-        al.add("자유주제 ");
+        al.add("할리갈리게임 ");
 
         ArrayAdapter<String> ad;
         ad = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al);
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case 2:
-                        Intent it2 = new Intent(MainActivity.this, jayoo.class);
+                        Intent it2 = new Intent(MainActivity.this, HailligalliActivity.class);
                         startActivity(it2);
                         finish();
                         break;
@@ -54,5 +59,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "한번 더 뒤로가기를 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
