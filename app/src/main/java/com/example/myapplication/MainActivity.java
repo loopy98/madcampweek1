@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> al = new ArrayList<String>();
         al.add("나만의 전화번호부 ");
         al.add("나만의 갤러리 ");
-        al.add("자유주제 ");
+        al.add("할리갈리게임 ");
 
         ArrayAdapter<String> ad;
         ad = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case 2:
-                        Intent it2 = new Intent(MainActivity.this, jayoo.class);
+                        Intent it2 = new Intent(MainActivity.this, HailligalliActivity.class);
                         startActivity(it2);
                         finish();
                         break;

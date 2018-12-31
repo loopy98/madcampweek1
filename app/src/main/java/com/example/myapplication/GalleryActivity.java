@@ -21,6 +21,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
@@ -90,7 +92,7 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         public final void callImageViewer(int selectedIndex) {
-            Intent i = new Intent(mContext, GalleryActivity.class);
+            Intent i = new Intent(mContext, ImagePopup.class);
             String imgPath = getImageInfo(imgData, geoData, thumbsIDList.get(selectedIndex));
             i.putExtra("filename", imgPath);
             startActivityForResult(i, 1);
@@ -119,18 +121,19 @@ public class GalleryActivity extends AppCompatActivity {
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
+                imageView.setLayoutParams(new GridView.LayoutParams(320, 320));
                 imageView.setAdjustViewBounds(false);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(1, 1, 1, 1);
             } else {
                 imageView = (ImageView) convertView;
             }
-            BitmapFactory.Options bo = new BitmapFactory.Options();
-            bo.inSampleSize = 8;
-            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
-            Bitmap resized = Bitmap.createScaledBitmap(bmp, 95, 95, true);
-            imageView.setImageBitmap(resized);
+//            BitmapFactory.Options bo = new BitmapFactory.Options();
+//            bo.inSampleSize = 8;
+//            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
+//            Bitmap resized = Bitmap.createScaledBitmap(bmp, 95, 95, true);
+//            imageView.setImageBitmap(resized);
+            Glide.with(mContext).load(thumbsDataList.get(position)).into(imageView);
 
             return imageView;
         }
