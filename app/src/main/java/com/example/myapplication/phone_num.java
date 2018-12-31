@@ -11,9 +11,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +28,8 @@ import org.json.JSONException;
 public class phone_num extends AppCompatActivity {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
+    private EditText editSearch;
+    private List<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +61,59 @@ public class phone_num extends AppCompatActivity {
 
         MyAdapter myAdapter = new MyAdapter(data);
         mRecyclerView.setAdapter(myAdapter);
+
+        //검색 기능 구현
+        editSearch = (EditText) findViewById(R.id.editSearch);
+        mRecyclerView = findViewById(R.id.phonenum);
+        list = new ArrayList<String>();
+
+
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // input창에 문자를 입력할때마다 호출된다.
+                // search 메소드를 호출한다.
+                String text = editSearch.getText().toString();
+                search(text);
+
+            }
+        });
+
+   }
+
+
+    // 검색 수행 방법
+    public void search(String charText) {
+
     }
 
+
+   // HOME 버튼을 누르면 Main으로
     public void home(View v) {
         Intent it = new Intent(this, MainActivity.class);
         startActivity(it);
         finish();
     }
 
+    // + add to a contact 버튼을 누르면 폰에 내장된 연락처 추가 창으로
     public void add_contact(View view) {
-        Intent intent = new Intent(this, add_contact.class);
+        Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
         startActivity(intent);
         finish();
+
     }
 
+    // 폰에 저장된 연락처 가져오기
     private ArrayList<phonenum_item> getContactList() throws JSONException {
         ArrayList<phonenum_item> data = new ArrayList<>();
         int icon = R.drawable.user;
