@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case 2:
-                        Intent it2 = new Intent(MainActivity.this, HailligalliActivity.class);
+                        Intent it2 = new Intent(MainActivity.this, HalligalliActivity.class);
                         startActivity(it2);
                         finish();
                         break;

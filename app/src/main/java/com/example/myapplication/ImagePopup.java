@@ -35,6 +35,8 @@ public class ImagePopup extends Activity {
         ImageView imageView;
         imageView = new ImageView(mContext);
 
+        
+
 //        BitmapFactory.Options bfo = new BitmapFactory.Options();
 //        bfo.inSampleSize = 2;
 //        Bitmap bm = BitmapFactory.decodeFile(imgPath, bfo);
