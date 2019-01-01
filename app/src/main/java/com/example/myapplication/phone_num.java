@@ -31,6 +31,7 @@ public class phone_num extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     private EditText editSearch;
     private List<String> list;
+    private ArrayList<String> arrayList;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -99,6 +100,7 @@ public class phone_num extends AppCompatActivity {
 
     // 검색 수행 방법
     public void search(String charText) {
+
 
     }
 

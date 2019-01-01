@@ -33,15 +33,6 @@ public class ImagePopup extends Activity {
         /** 완성된 이미지 보여주기  */
         ImageView iv = (ImageView) findViewById(R.id.imageView);
 
-
-
-
-//        BitmapFactory.Options bfo = new BitmapFactory.Options();
-//        bfo.inSampleSize = 2;
-//        Bitmap bm = BitmapFactory.decodeFile(imgPath, bfo);
-//        Bitmap resized = Bitmap.createScaledBitmap(bm, imgWidth, imgHeight, true);
-//        iv.setImageBitmap(resized);
-
         Glide.with(mContext).load(imgPath).into(iv);
     }
     @Override
