@@ -31,7 +31,8 @@
         <activity android:name=".GalleryActivity">
         </activity>
 
-        <activity android:name=".HalligalliActivity">
+        <activity android:name=".HalligalliActivity"
+            android:screenOrientation="landscape">
         </activity>
 
         <activity android:name=".ImagePopup">

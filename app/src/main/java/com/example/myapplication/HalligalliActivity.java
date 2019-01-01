@@ -105,8 +105,8 @@ public class HalligalliActivity extends AppCompatActivity {
             current_list[current_score%4] = new_card;
             current_score++;
 
-            imageadapter = new ImageAdapter(this);
-            gridview = (GridView) findViewById(R.id.halligalli_gridview);
+//            imageadapter = new ImageAdapter(this);
+//            gridview = (GridView) findViewById(R.id.halligalli_gridview);
             gridview.setAdapter(imageadapter);
 //            imageadapter.notifyDataSetChanged();
 

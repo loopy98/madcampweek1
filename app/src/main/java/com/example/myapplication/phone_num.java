@@ -15,7 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -116,11 +116,15 @@ public class phone_num extends AppCompatActivity {
                 if (arrayList.get(i).getName().toLowerCase().contains(charText)) {
                     list.add(arrayList.get(i));
                 }
+                else if (arrayList.get(i).getPhonenum().contains(charText)) {
+                    list.add(arrayList.get(i));
+                }
             }
         }
         data = list;
-        myAdapter.notifyDataSetChanged();
-
+        MyAdapter mySearchAdapter = new MyAdapter(list);
+        mySearchAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mySearchAdapter);
     }
 
 
