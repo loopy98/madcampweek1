@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -73,11 +71,9 @@ public class GalleryActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * ==========================================
+    /*** ==========================================
      * Adapter class
-     * ==========================================
-     */
+     * ==========================================*/
     public class ImageAdapter extends BaseAdapter {
         private String imgData;
         private String geoData;
@@ -128,11 +124,7 @@ public class GalleryActivity extends AppCompatActivity {
             } else {
                 imageView = (ImageView) convertView;
             }
-//            BitmapFactory.Options bo = new BitmapFactory.Options();
-//            bo.inSampleSize = 8;
-//            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
-//            Bitmap resized = Bitmap.createScaledBitmap(bmp, 95, 95, true);
-//            imageView.setImageBitmap(resized);
+
             Glide.with(mContext).load(thumbsDataList.get(position)).into(imageView);
 
             return imageView;

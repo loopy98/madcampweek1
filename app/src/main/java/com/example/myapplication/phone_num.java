@@ -30,8 +30,10 @@ public class phone_num extends AppCompatActivity {
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     private EditText editSearch;
-    private List<String> list;
-    private ArrayList<String> arrayList;
+    private ArrayList<phonenum_item> list;
+    private ArrayList<phonenum_item> arrayList;
+    private ArrayList<phonenum_item> data;
+    private MyAdapter myAdapter;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -71,7 +73,11 @@ public class phone_num extends AppCompatActivity {
         //검색 기능 구현
         editSearch = (EditText) findViewById(R.id.editSearch);
         mRecyclerView = findViewById(R.id.phonenum);
-        list = new ArrayList<String>();
+        arrayList = new ArrayList<phonenum_item>();
+        list = new ArrayList<phonenum_item>();
+        arrayList.addAll(data);
+        list.addAll(data);
+
 
 
         editSearch.addTextChangedListener(new TextWatcher() {
@@ -100,7 +106,20 @@ public class phone_num extends AppCompatActivity {
 
     // 검색 수행 방법
     public void search(String charText) {
+        list.clear();
 
+        if (charText.length() == 0) {
+            list.addAll(arrayList);
+        }
+        else{
+            for(int i = 0; i < arrayList.size(); i++){
+                if (arrayList.get(i).getName().toLowerCase().contains(charText)) {
+                    list.add(arrayList.get(i));
+                }
+            }
+        }
+        data = list;
+        myAdapter.notifyDataSetChanged();
 
     }
 
