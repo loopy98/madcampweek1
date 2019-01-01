@@ -14,10 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class HalligalliActivity extends AppCompatActivity {
     int player1_score = 0;
     int player2_score = 0;
     int current_score = 0;
+    int random_num;
+    boolean is_tapped = false;
     DisplayMetrics mMetrics = new DisplayMetrics();
     GridView gridview = (GridView) findViewById(R.id.halligalli_gridview);
     Integer[] halligalli_list = {R.drawable.banana1, R.drawable.banana2, R.drawable.banana3, R.drawable.banana4, R.drawable.banana5,
@@ -78,8 +83,21 @@ public class HalligalliActivity extends AppCompatActivity {
                 }
             }, 3000);
         }
+//        게임이 종료되지 않고 정상적으로 진행된다
         else {
+            Random random = new Random();
+            random_num = random.nextInt(20);
+            Integer new_card = halligalli_list[random_num];
 
+            if (current_score >= 4) {
+                int prev_random_num = Arrays.asList(halligalli_list).indexOf(current_list[current_score%4]);
+                fruit_num[prev_random_num/5] -= prev_random_num%5 + 1;
+            }
+            fruit_num[random_num/5] += random_num%5 + 1;
+            current_list[current_score%4] = new_card;
+            current_score++;
+
+            gridview.setAdapter(new ImageAdapter(this));
         }
     }
 
