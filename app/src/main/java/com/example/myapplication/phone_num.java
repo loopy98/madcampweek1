@@ -48,58 +48,61 @@ public class phone_num extends AppCompatActivity {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
-            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-                Intent it = new Intent(this, MainActivity.class);
-                startActivity(it);
-                finish();
-            }
+//            permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+//            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+//                Intent it = new Intent(this, MainActivity.class);
+//                startActivity(it);
+//                finish();
+//            }
         }
-        mRecyclerView = findViewById(R.id.phonenum);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            mRecyclerView = findViewById(R.id.phonenum);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<phonenum_item> data = new ArrayList<>();
-        try {
-            data = getContactList();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            ArrayList<phonenum_item> data = new ArrayList<>();
+            try {
+                data = getContactList();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            MyAdapter myAdapter = new MyAdapter(data);
+            mRecyclerView.setAdapter(myAdapter);
+
+            //검색 기능 구현
+            editSearch = (EditText) findViewById(R.id.editSearch);
+            mRecyclerView = findViewById(R.id.phonenum);
+            arrayList = new ArrayList<phonenum_item>();
+            list = new ArrayList<phonenum_item>();
+            arrayList.addAll(data);
+            list.addAll(data);
+
+
+
+            editSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    // input창에 문자를 입력할때마다 호출된다.
+                    // search 메소드를 호출한다.
+                    String text = editSearch.getText().toString();
+                    search(text);
+
+                }
+            });
         }
 
-        MyAdapter myAdapter = new MyAdapter(data);
-        mRecyclerView.setAdapter(myAdapter);
-
-        //검색 기능 구현
-        editSearch = (EditText) findViewById(R.id.editSearch);
-        mRecyclerView = findViewById(R.id.phonenum);
-        arrayList = new ArrayList<phonenum_item>();
-        list = new ArrayList<phonenum_item>();
-        arrayList.addAll(data);
-        list.addAll(data);
-
-
-
-        editSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // input창에 문자를 입력할때마다 호출된다.
-                // search 메소드를 호출한다.
-                String text = editSearch.getText().toString();
-                search(text);
-
-            }
-        });
 
    }
 
@@ -230,5 +233,17 @@ public class phone_num extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(phone_num.this, phone_num.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Intent intent2 = new Intent(phone_num.this, MainActivity.class);
+            startActivity(intent2);
+            finish();
+        }
+    }
 }

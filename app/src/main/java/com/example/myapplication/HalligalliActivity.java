@@ -59,7 +59,7 @@ public class HalligalliActivity extends AppCompatActivity {
     public void halligalli_main(){
         if (stop_main) return;
         stop_main = true;
-        if ( player1_score >= 50 ) {
+        if ( player1_score >= 30 ) {
             setContentView(R.layout.halligalli_victory);
             TextView who = findViewById(R.id.halligalli_victory);
             String who_wins = "Player 1 Wins!!";
@@ -75,7 +75,7 @@ public class HalligalliActivity extends AppCompatActivity {
                 }
             }, 3000);
         }
-        else if (player2_score >= 50){
+        else if (player2_score >= 30){
             setContentView(R.layout.halligalli_victory);
             TextView who = findViewById(R.id.halligalli_victory);
             String who_wins = "Player 2 Wins!!";

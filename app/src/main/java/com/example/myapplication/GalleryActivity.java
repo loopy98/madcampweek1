@@ -36,24 +36,25 @@ public class GalleryActivity extends AppCompatActivity {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-                Intent it = new Intent(this, MainActivity.class);
-                startActivity(it);
-                finish();
-            }
+//            permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+//            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+//                Intent it = new Intent(this, MainActivity.class);
+//                startActivity(it);
+//                finish();
+//            }
         }
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            mContext = this;
+            GridView gv = (GridView) findViewById(R.id.gridview);
+            final ImageAdapter ia = new ImageAdapter(this);
+            gv.setAdapter(ia);
+            gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        mContext = this;
-        GridView gv = (GridView) findViewById(R.id.gridview);
-        final ImageAdapter ia = new ImageAdapter(this);
-        gv.setAdapter(ia);
-        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                ia.callImageViewer(position);
-            }
-        });
+                public void onItemClick(AdapterView parent, View v, int position, long id) {
+                    ia.callImageViewer(position);
+                }
+            });
+        }
     }
 
     @Override
@@ -67,6 +68,20 @@ public class GalleryActivity extends AppCompatActivity {
             backPressedTime = tempTime;
             Intent it = new Intent(this, MainActivity.class);
             startActivity(it);
+            finish();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(GalleryActivity.this, GalleryActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Intent intent2 = new Intent(GalleryActivity.this, MainActivity.class);
+            startActivity(intent2);
             finish();
         }
     }
